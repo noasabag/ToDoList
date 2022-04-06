@@ -1,66 +1,64 @@
-import React from 'react';
 import List from './List.js'
 import './App.css';
 import './ToDo.css'
+import { useState, useRef } from 'react';
 
-class Todo extends React.Component{
-  constructor(props){
-    super(props)
-    this.state = { list: [] }
-    let missionDescription = ''
-  }
+const Todo = ()=>{
+
+  const [list, setList] = useState([]) 
+  const [missionDescription,setMissionDescription ] = useState("") 
   
-  addMission = (event) => {
+  
+  const addMission = (event) => {
     event.preventDefault();
     let missionId= Math.random()
-    this.setState( {
-      list: [ ...this.state.list,
-         { id: missionId, description: this.state.missionDescription, completed: false } ]
-                  }) 
+    setList(
+       [ ...list,
+         { id: missionId, description: missionDescription, completed: false } ]
+                  ) 
   } 
 
 
-     InputValue=(event)=>{
-      this.setState({ missionDescription: event.target.value })
+  const InputValue=(event)=>{
+    setMissionDescription(event.target.value)
      }
 
 
-     removeMission=(missionID)=>{
-      const newARR = this.state.list.filter(object=>
+     const removeMission=(missionID)=>{
+      const newARR = list.filter(object=>
       object.id!==missionID
         )
-       this.setState({ list: newARR })
+      setList(newARR)
       }
 
-  changeState=(id)=>{       //mission completes or not
-    this.state.list.length.map((object, index )=> {
+ const changeState=(id)=>{       //mission completes or not
+    list.map((object, index )=> {
       if( object.id===id){
-        this.setState({ list: 
+        setList( 
         [  
-          ...this.state.list.slice(0,index),
+          ...list.slice(0,index),
           Object.assign({},
             object, 
           { completed: !object.completed }),
-          ...this.state.list.slice(index+1)
-        ]
-        })
+          ...list.slice(index+1)
+        ])
+        
        }
     })
   }
   
-  render(){
-    
+
 return(
   <div>
-    <form ref="form" onSubmit={this.addMission}>
+    <form onSubmit={addMission}>
      <h1>To Do List</h1>
-     <input  placeholder='decription' id = 'myInput' onChange={this.InputValue} /> 
+     <input  placeholder='decription' id = 'myInput' onChange={InputValue} /> 
        <button type="submit">add </button> 
       
             <ul>
                {
-                this.state.list.map(element => {
-             return (<List key = {element.id} changeState = { this.changeState } listItem = { element } removeMission={this.removeMission} />
+                list.map(element => {
+             return (<List key = {element.id} changeState = { changeState } listItem = {element} removeMission={removeMission} />
 )
             }
                   ) }
@@ -70,7 +68,9 @@ return(
   )
 
 
+
+
 }
 
-};
+;
 export default Todo;

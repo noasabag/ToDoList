@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import Todo from './Todo.js';
 import reportWebVitals from './reportWebVitals';
-import List from './List.js'
 
 ReactDOM.render(
   <React.StrictMode>
